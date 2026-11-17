@@ -24,6 +24,27 @@ placa y los puntos de su licencia en la ANT.
 
 ![Diagrama de contenedores](docs/img/c4-contenedores.png)
 
+### Nivel 3: componentes
+
+**ms-ant**: controlador REST, caso de uso con tiempo de espera, caché resiliente y el puerto `PuertoAnt` con sus dos adaptadores (real y simulado).
+
+![Componentes de ms-ant](docs/img/c4-componentes-ms-ant.png)
+
+**ms-sri**: controladores REST, caso de uso que exige persona natural, cliente HTTP del SRI y caché resiliente.
+
+![Componentes de ms-sri](docs/img/c4-componentes-ms-sri.png)
+
+### Nivel 4: código
+
+IcePanel modela hasta el nivel 3. El nivel 4 (diagrama de clases del núcleo de resiliencia y la secuencia de respaldo)
+está en [`docs/c4-nivel4-codigo.md`](docs/c4-nivel4-codigo.md), en Mermaid, generado a partir de las clases reales.
+
+![Diagrama de clases](docs/img/c4-nivel4-clases.png)
+
+![Secuencia de respaldo](docs/img/secuencia-respaldo.png)
+
+### Resumen de contenedores
+
 | Contenedor | Tecnología | Responsabilidad |
 |---|---|---|
 | Frontend Web | React + Vite | Flujo en 3 pasos, validación de entradas, muestra errores y el aviso de dato no reciente |
