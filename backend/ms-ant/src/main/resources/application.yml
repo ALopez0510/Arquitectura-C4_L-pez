@@ -1,0 +1,35 @@
+server:
+  port: ${PORT:8082}
+
+spring:
+  application:
+    name: ms-ant
+  data:
+    redis:
+      # Upstash: rediss://default:<CLAVE>@<host>.upstash.io:6379
+      url: ${REDIS_URL:redis://localhost:6379}
+      timeout: 2s
+      connect-timeout: 2s
+
+app:
+  cache:
+    tipo: ${CACHE_TIPO:redis}          # redis (nube) | memoria (solo desarrollo)
+  cors:
+    origenes: ${CORS_ORIGENES:http://localhost:5173}
+  ant:
+    # simulado mientras la ANT responda 502; cambiar a "real" cuando se recupere
+    modo: ${ANT_MODO:simulado}
+    url: https://consultaweb.ant.gob.ec/PortalWEB/paginas/clientes/clp_grid_citaciones.jsp
+    timeout-conexion: 3s
+    tiempo-espera: ${ANT_TIEMPO_ESPERA:8s}
+    # Vigencia de 1 h: las citaciones nuevas tardan días en registrarse, así que 1 h no oculta
+    # cambios relevantes y reduce las llamadas a un servicio con muy baja disponibilidad.
+    vigencia: ${ANT_CACHE_VIGENCIA:1h}
+    # Retención de 7 días: si la ANT pasa caída varios días, se sigue mostrando el último dato
+    # bueno (con aviso). Pasado ese tiempo el dato se considera demasiado viejo y se devuelve 503.
+    retencion: ${ANT_CACHE_RETENCION:7d}
+    latencia-simulada-lenta: 15s
+
+logging:
+  level:
+    ec.udla.consultas: INFO

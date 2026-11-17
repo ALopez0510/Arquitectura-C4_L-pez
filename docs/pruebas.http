@@ -1,0 +1,72 @@
+### Pruebas manuales de la API (extensión REST Client de VS Code o IntelliJ HTTP Client)
+@sri = http://localhost:8081/api/v1
+@ant = http://localhost:8082/api/v1
+
+### 200 - Persona natural válida
+POST {{sri}}/contribuyentes/verificacion
+Content-Type: application/json
+
+{ "correo": "alexander@correo.com", "ruc": "1710034065001" }
+
+### 400 - Correo y RUC inválidos (VALIDACION_FALLIDA / RUC_INVALIDO)
+POST {{sri}}/contribuyentes/verificacion
+Content-Type: application/json
+
+{ "correo": "correo-sin-arroba", "ruc": "17100340650AB" }
+
+### 404 - RUC que no es contribuyente (CONTRIBUYENTE_NO_ENCONTRADO)
+POST {{sri}}/contribuyentes/verificacion
+Content-Type: application/json
+
+{ "correo": "alexander@correo.com", "ruc": "1799999999001" }
+
+### 422 - Es contribuyente pero no persona natural (NO_ES_PERSONA_NATURAL)
+POST {{sri}}/contribuyentes/verificacion
+Content-Type: application/json
+
+{ "correo": "alexander@correo.com", "ruc": "1790016919001" }
+
+### 200 - Vehículo
+GET {{sri}}/vehiculos/PBX1234
+
+### 404 - Vehículo inexistente (VEHICULO_NO_ENCONTRADO)
+GET {{sri}}/vehiculos/ZZZ0000
+
+### 400 - Placa con formato incorrecto (PLACA_INVALIDA)
+GET {{sri}}/vehiculos/12345
+
+### 200 - Puntos de licencia (origen SERVICIO_EXTERNO la primera vez, CACHE después)
+GET {{ant}}/licencias/1710034065/puntos?placa=PBX1234
+
+### Simular la caída de la ANT (HTTP 502)
+PUT {{ant}}/simulacion/ant
+Content-Type: application/json
+
+{ "estado": "CAIDO" }
+
+### 200 - Respaldo: último dato bueno con desactualizado=true y aviso
+GET {{ant}}/licencias/1710034065/puntos?placa=PBX1234&refrescar=true
+
+### 503 - ANT caída y sin dato guardado para esta cédula (SERVICIO_EXTERNO_NO_DISPONIBLE)
+GET {{ant}}/licencias/0912345675/puntos
+
+### Simular lentitud (supera el tiempo de espera de 8 s)
+PUT {{ant}}/simulacion/ant
+Content-Type: application/json
+
+{ "estado": "LENTO" }
+
+### Restablecer
+PUT {{ant}}/simulacion/ant
+Content-Type: application/json
+
+{ "estado": "DISPONIBLE" }
+
+### 400 - Estado de simulación inválido (ESTADO_INVALIDO)
+PUT {{ant}}/simulacion/ant
+Content-Type: application/json
+
+{ "estado": "APAGADO" }
+
+### 405 - Método no permitido (METODO_NO_PERMITIDO)
+DELETE {{sri}}/vehiculos/PBX1234

@@ -1,0 +1,31 @@
+server:
+  port: ${PORT:8081}
+
+spring:
+  application:
+    name: ms-sri
+  data:
+    redis:
+      # Upstash: rediss://default:<CLAVE>@<host>.upstash.io:6379
+      url: ${REDIS_URL:redis://localhost:6379}
+      timeout: 2s
+      connect-timeout: 2s
+
+app:
+  cache:
+    tipo: ${CACHE_TIPO:redis}          # redis (nube) | memoria (solo desarrollo)
+  cors:
+    origenes: ${CORS_ORIGENES:http://localhost:5173}
+  sri:
+    catastro-url: https://srienlinea.sri.gob.ec/sri-catastro-sujeto-servicio-internet/rest
+    matriculacion-url: https://srienlinea.sri.gob.ec/sri-matriculacion-vehicular-recaudacion-servicio-internet/rest
+    timeout-conexion: 3s
+    timeout-lectura: 6s
+    # Los datos del catastro y del vehículo cambian rara vez (actualización de RUC, matrícula anual)
+    vigencia-contribuyente: ${SRI_CACHE_VIGENCIA:24h}
+    vigencia-vehiculo: ${SRI_CACHE_VIGENCIA:24h}
+    retencion: ${SRI_CACHE_RETENCION:7d}
+
+logging:
+  level:
+    ec.udla.consultas: INFO
