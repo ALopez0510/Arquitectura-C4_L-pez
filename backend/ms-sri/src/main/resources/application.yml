@@ -6,7 +6,7 @@ spring:
     name: ms-sri
   data:
     redis:
-      # Upstash: rediss://default:<CLAVE>@<host>.upstash.io:6379
+      # Redis Cloud: redis://default:<CLAVE>@<host>.db.redis.io:<PUERTO>
       url: ${REDIS_URL:redis://localhost:6379}
       timeout: 2s
       connect-timeout: 2s

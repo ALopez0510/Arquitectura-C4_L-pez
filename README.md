@@ -6,7 +6,7 @@ placa y los puntos de su licencia en la ANT.
 
 - **Frontend:** React 18 + Vite
 - **Backend:** dos microservicios Java 17 / Spring Boot 3.3 (`ms-sri`, `ms-ant`) y un módulo común
-- **Caché en la nube:** Redis administrado en **Upstash**
+- **Caché en la nube:** Redis administrado en **Redis Cloud** (redis.io, plan gratuito de 30 MB)
 - **Modelo C4:** IcePanel (contexto y contenedores), enlazado a este repositorio
 
 > **Situación de la ANT (17/11/2026):** la consulta de citaciones responde **HTTP 502 Bad Gateway**
@@ -50,7 +50,7 @@ está en [`docs/c4-nivel4-codigo.md`](docs/c4-nivel4-codigo.md), en Mermaid, gen
 | Frontend Web | React + Vite | Flujo en 3 pasos, validación de entradas, muestra errores y el aviso de dato no reciente |
 | ms-sri (8081) | Java / Spring Boot | Verifica contribuyente y persona natural, consulta vehículo |
 | ms-ant (8082) | Java / Spring Boot | Consulta puntos de licencia con tiempo de espera, caché y respaldo |
-| Caché Redis | Upstash (Redis gestionado, TLS) | Último dato bueno de cada consulta, con su fecha |
+| Caché Redis Cloud | Redis gestionado en redis.io | Último dato bueno de cada consulta, con su fecha |
 
 ```
 consulta-vehicular-c4/
@@ -160,23 +160,23 @@ Errores comunes a ambos: 400 `CUERPO_INVALIDO`, 404 `RUTA_NO_ENCONTRADA`, 405 `M
 
 Requisitos: **JDK 17 o superior**, **Maven 3.9**, **Node.js 18 o superior**.
 
-### 1. Caché en Upstash (gratis)
+### 1. Caché en Redis Cloud (gratis)
 
-1. Crear una cuenta en https://upstash.com y una base **Redis** (región más cercana, por ejemplo `us-east-1`).
-2. En la pestaña de la base, copiar la URL de conexión con TLS: `rediss://default:<CLAVE>@<host>.upstash.io:6379`.
+1. Crear una cuenta en https://redis.io/cloud y elegir **"Try 30 MB for free"** (no el plan de pago). Proveedor AWS, región `us-east-1`.
+2. En la base creada pulsar **Connect** y copiar la URL: `redis://default:<CLAVE>@<host>.db.redis.io:<PUERTO>`.
 3. Guardarla en la variable de entorno `REDIS_URL` (no subirla a GitHub).
 
-Sin Upstash se puede probar con `CACHE_TIPO=memoria` (caché local, solo desarrollo).
+Sin Redis Cloud se puede probar con `CACHE_TIPO=memoria` (caché local, solo desarrollo).
 
 ### 2. Backend (PowerShell, desde la carpeta `backend`)
 
 ```powershell
 mvn clean package
 # Terminal 1
-$env:REDIS_URL = "rediss://default:<CLAVE>@<host>.upstash.io:6379"
+$env:REDIS_URL = "redis://default:<CLAVE>@<host>.db.redis.io:<PUERTO>"
 java -jar ms-sri/target/ms-sri-1.0.0.jar
 # Terminal 2
-$env:REDIS_URL = "rediss://default:<CLAVE>@<host>.upstash.io:6379"
+$env:REDIS_URL = "redis://default:<CLAVE>@<host>.db.redis.io:<PUERTO>"
 $env:ANT_MODO = "simulado"     # "real" cuando la ANT vuelva a responder
 java -jar ms-ant/target/ms-ant-1.0.0.jar
 ```

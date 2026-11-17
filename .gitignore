@@ -9,7 +9,7 @@ target/
 node_modules/
 dist/
 
-# Variables de entorno (contienen la clave de Upstash)
+# Variables de entorno (contienen la clave de Redis Cloud)
 .env
 .env.local
 *.env

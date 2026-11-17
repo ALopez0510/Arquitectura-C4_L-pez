@@ -8,8 +8,8 @@ import java.time.Duration;
 import java.util.Optional;
 
 /**
- * Caché en la nube: Redis administrado (Upstash). La conexión se define con la variable
- * de entorno REDIS_URL, por ejemplo rediss://default:CLAVE@xxxx.upstash.io:6379
+ * Caché en la nube: Redis administrado (Redis Cloud). La conexión se define con la variable
+ * de entorno REDIS_URL, por ejemplo redis://default:CLAVE@xxxx.db.redis.io:PUERTO
  */
 @Component
 @ConditionalOnProperty(name = "app.cache.tipo", havingValue = "redis", matchIfMissing = true)
@@ -33,6 +33,6 @@ public class AlmacenRedis implements AlmacenCache {
 
     @Override
     public String descripcion() {
-        return "Redis en la nube (Upstash)";
+        return "Redis Cloud";
     }
 }

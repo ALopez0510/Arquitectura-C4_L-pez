@@ -174,7 +174,7 @@ sequenceDiagram
     participant C as LicenciaController
     participant S as ServicioPuntos
     participant K as CacheResiliente
-    participant R as Redis (Upstash)
+    participant R as Redis Cloud
     participant A as PuertoAnt
     UI->>C: GET /api/v1/licencias/1710034065/puntos?refrescar=true
     C->>S: consultar(cedula, placa, true)
