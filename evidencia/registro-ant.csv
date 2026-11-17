@@ -1,3 +1,4 @@
 fecha,url,codigo,detalle
 2026-11-17 11:14:49 -05:00,"https://consultaweb.ant.gob.ec/PortalWEB/paginas/clientes/clp_grid_citaciones.jsp?ps_tipo_identificacion=CED&ps_identificacion=1710034065&ps_placa=",502,"Bad Gateway"
 2026-11-17 11:14:49 -05:00,"https://consultaweb.ant.gob.ec/PortalWEB/paginas/clientes/clp_criterio_consulta.jsp",502,"Bad Gateway"
+2026-11-17 12:30:36 -05:00,"https://consultaweb.ant.gob.ec/PortalWEB/paginas/clientes/clp_grid_citaciones.jsp?ps_tipo_identificacion=CED&ps_identificacion=1710034065&ps_placa=",502,"Bad Gateway (nueva prueba antes de entregar)"
